@@ -7,12 +7,15 @@ from backend.app.api import (
     search,
     targets,
 )
+from backend.app.database import supabase
+
 
 app = FastAPI(
     title="Asclepius API",
     description="Biomedical relationship exploration backend",
     version="0.1.0",
 )
+
 
 app.include_router(targets.router)
 app.include_router(compounds.router)
@@ -31,6 +34,16 @@ def root():
 
 @app.get("/health")
 def health():
-    return {
-        "status": "healthy",
-    }
+    try:
+        supabase.table("organs").select("id").limit(1).execute()
+
+        return {
+            "status": "healthy",
+            "database": "connected",
+        }
+
+    except Exception:
+        return {
+            "status": "unhealthy",
+            "database": "disconnected",
+        }
