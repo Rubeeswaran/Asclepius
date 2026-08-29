@@ -5,6 +5,7 @@ from .api.diseases import router as disease_router
 from .api.targets import router as target_router
 from .api.compounds import router as compound_router
 from .api.evidence import router as evidence_router
+from .api.ai import router as ai_router
 from .database import supabase
 
 app = FastAPI(
@@ -18,6 +19,7 @@ app.include_router(disease_router)
 app.include_router(target_router)
 app.include_router(compound_router)
 app.include_router(evidence_router)
+app.include_router(ai_router)
 
 
 @app.get("/")
